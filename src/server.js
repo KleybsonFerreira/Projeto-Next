@@ -24,25 +24,32 @@ const proffys = [
 ]
 //função que vai chamar a pagina principal
 function pageLanding(req, res){
-    return res.sendFile(__dirname + "/views/index.html")
+    return res.render("index.html")
 }
 //função que vai chamar a pagina study
 function pageStudy(req, res){
-    return res.sendFile(__dirname + "/views/study.html")
+    return res.render("study.html", { proffys })
 }
 //função que vai chamar a pagina give-classes
 function pageGiveClasses(req, res){
-    return res.sendFile(__dirname + "/views/give-classes.html")
+    return res.render("/give-classes.html")
 }
-
-
 
 
 const express = require('express')
 const server = express()
+const nunjucks = require('nunjucks')
 
-server.use(express.static("public"))
+//config nunjucks
+nunjucks.configure('src/views', {
+    express: server,
+    noCache: true,
+
+})
+
 //config de arquivos estaticos
+server.use(express.static("public"))
+//rotas de app
 .get("/", pageLanding)
 .get("/study", pageStudy)
 .get("/give-classes", pageGiveClasses)
